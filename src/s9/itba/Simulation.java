@@ -6,19 +6,19 @@ import java.util.Set;
 
 public class Simulation {
 	
-	private final double GRAVITY = 9.8;
+	
 	public static final double mass = 0.01;
 
-	double friccion = 0;
+	public static Vector vdeseada;
 	Storage s = null;
 	private Set<Particle> particles;
 	private Set<Particle> outOfBox;
 	Set<Particle> toBeRemoved = new HashSet<Particle>();
 	private Grid grid;
 
-	public Simulation(double friccion, Storage s) {
+	public Simulation(Storage s, Vector vdeseada) {
+		this.vdeseada = vdeseada;
 		this.s = s;
-		s.friccion = friccion;
 		this.particles = s.getParticles();
 		this.outOfBox = new HashSet<Particle>();
 		double L = s.getL()+2*0.1;
@@ -113,43 +113,24 @@ public class Simulation {
 	
 	private void getF(Set<Particle> particles){
 		clearMarks(particles);
-		for(Particle p: particles)
-			p.f = new Vector(0,-p.m * GRAVITY);
+		//for(Particle p: particles)
+		//	p.f = new Vector(0,-p.m * GRAVITY);
 		for(Particle p: particles){
 			if(p.outOfBox)
 				return;
 			if(!p.checked){
 				p.checked = true;
 				for(Particle p2: particles){
+					//acá hay que calcular las dos fuerzas extra
+					//social force model
+					//driving force
 					if(!p.equals(p2) && !p2.checked){
 						p.collision(p2);
 					}
 				}
 			}
 		}
-		// CON CELL INDEX METHOD
-		/*for(Particle p: particles){
-			if(p.outOfBox)
-				return;
-			if(!p.checked){
-				// Check own cell
-				for (Particle p2: grid.getCell(p).getParticles()){
-					System.out.println(grid.getCell(p).getParticles().size());
-					if (!p.equals(p2) && !p2.checked){
-						p.collision(p2);
-					}
-				}
-				// Check neighbouring cells
-				for(Cell cell: grid.getCell(p).getNeighbours()){
-					for(Particle p2: cell.getParticles()){
-						if(!p.equals(p2))
-							p.collision(p2);
-					}
-				}
-				p.checked = true;
-			}
-		}*/
-		// Check wall Collision
+		
 		for(Particle p: particles){
 			if(p.ry>=-p.r)
 				p.collisionWall(s.getW(), s.getL(), s.getD());
@@ -184,4 +165,6 @@ public class Simulation {
 			p.checked = false;
 		}
 	}
+	
+
 }

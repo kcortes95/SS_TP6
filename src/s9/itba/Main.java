@@ -6,9 +6,9 @@ public class Main {
 		double dt = 0.005*Math.sqrt(0.01/Math.pow(10,5));
 		double dt2 = 0.01;
 
-		Storage s = new Storage(7, 10, 4);
-		s.generateRandomParticles(2);
-		Simulation sim = new Simulation(0.95, s);
+		Storage s = new Storage(20, 20, 1.2);
+		s.generateRandomParticle(150);
+		Simulation sim = new Simulation(s,new Vector(1, 1.001));
 		sim.run(40,dt,dt2);
 	}
 }

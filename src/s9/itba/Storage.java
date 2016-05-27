@@ -8,29 +8,27 @@ public class Storage {
 	private double W;
 	private double L;
 	private double D;
-	double friccion;
 
 	private Set<Particle> particles = null;
 
-	public Storage(double W, double L, double D, double friccion) {
+	public Storage(double W, double L, double D) {
 		this.W = W;
 		this.L = L;
 		this.D = D;
-		this.friccion = friccion;
 		this.particles = new HashSet<Particle>();
 	}
-
-	public Storage(double W, double L, double D) {
-		this(W, L, D, 0);
-	}
 	
-	public void generateRandomParticles(double time){
-		double start = System.currentTimeMillis();
-		while(System.currentTimeMillis()-start<time*1000){
+	public void generateRandomParticle(int total){
+		if(total < 100)
+			total = 100;
+		
+		if(total > 300)
+			total = 300;
+		
+		for(int i = 0 ; i < total ; i++){
 			Particle p = generateRandomPos();
-			if(isValidPos(p)){
+			if(isValidPos(p))
 				particles.add(p);
-			}
 		}
 	}
 	

@@ -3,12 +3,9 @@ package s9.itba;
 import java.awt.Color;
 import java.util.*;
 
-
-
 public class Particle {
 
-
-	public static final double kn = Math.pow(10, 5);
+	public static final double kn = 1.2 * Math.pow(10, 5);
 	public static final double kt = 2*kn;
 	public static final double mu = kn;
 	
@@ -20,10 +17,10 @@ public class Particle {
     public double ax, ay;
     public double r;    
     public double m;   
+    public Vector vdeseada = Simulation.vdeseada;
     private Color c;     
     public int ID;
     public boolean checked = false, outOfBox=false;
-    
 
     public Particle(double rx, double ry, double vx, double vy, double ax, double ay, double radius, double mass, Color color) {
         this.vx = vx;
@@ -181,4 +178,22 @@ public class Particle {
 		Vector tVersor = getTanVersor(p);
 		return -kt * getSuperposition(p) * (getTanVel(tVersor)-p.getTanVel(tVersor));
 	}
+	
+	public void calculateSocialForceModel(Particle p){
+		int A = 2000;
+		double B = 0.08;
+		double cuenta = A*Math.exp(-getSuperposition(p)/B);
+		this.f.x = cuenta*Math.cos(getAngle(p));
+		this.f.y = cuenta*Math.sin(getAngle(p));
+	}
+	
+	public void calculateDrivingForce(Vector target){
+		double force;
+		//force = m*(v)
+	}
+	
+	private double getAngleWithTarget(Vector target){
+		return Math.atan2(target.y-ry, target.x-rx);
+	}
+	
 }
