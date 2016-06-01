@@ -40,7 +40,7 @@ public class Storage {
 	}
 	
 	private Particle generateRandomPos(){
-		double radius = (0.5+Math.random()*0.8)/2;
+		double radius = (0.5+Math.random()*0.08)/2;
 		double x = Math.random()*(W-2*radius)+radius;
 		double y = Math.random()*(L-2*radius)+radius;
 		return new Particle(x, y, radius, Simulation.mass);

@@ -9,7 +9,6 @@ public class Simulation {
 	
 	public static final double mass = 0.01;
 
-	public static double vdeseada;
 	public double angle;
 	
 	Storage s = null;
@@ -18,8 +17,7 @@ public class Simulation {
 	Set<Particle> toBeRemoved = new HashSet<Particle>();
 	private Grid grid;
 
-	public Simulation(Storage s, double vdeseada) {
-		this.vdeseada = vdeseada;
+	public Simulation(Storage s) {
 		this.s = s;
 		this.particles = s.getParticles();
 		this.outOfBox = new HashSet<Particle>();

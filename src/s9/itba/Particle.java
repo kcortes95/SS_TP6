@@ -10,6 +10,7 @@ public class Particle {
 	public static final double A = 2000;
 	public static final double B = 0.08;
 	public static final double tau = 0.5;
+	public static final double dVel = 1.3;
 	
 	public Particle previous, next, pred;
     static int counter = 1;
@@ -20,7 +21,6 @@ public class Particle {
     public double r;    
     public double m;   
     
-    public double vdeseada = Simulation.vdeseada;
     public double dAngle;
     
     private Color c;     
@@ -189,19 +189,23 @@ public class Particle {
 	}
 	
 	public void calculateSocialForceModel(Particle p){
-		double res = A*Math.exp(-getSuperposition(p)/B);
+		double res = A*Math.exp(-(getDistance(p)-p.r-this.r)/B);
+		/*System.out.println("Pos this = " + rx + "," + ry);
+		System.out.println("Pos other = " + p.rx + "," + p.ry);
+		System.out.println("Angle = " + getAngle(p));*/
 		double xF = res*Math.cos(getAngle(p));
 		double yF = res*Math.sin(getAngle(p));
-		this.f.x += xF;
-		this.f.y += yF;
-		p.f.x -= xF;
-		p.f.y -= yF;
+		//System.out.println("F = " + res + " - xF = " + xF + " - yF = " + yF);
+		this.f.x -= xF;
+		this.f.y -= yF;
+		p.f.x += xF;
+		p.f.y += yF;
 	}
 	
 	public void calculateDrivingForce(Vector[] target){
 		calculateDAngle(target);
-		this.f.x += m*(vdeseada*Math.cos(dAngle)-vx)/tau;
-		this.f.y += m*(vdeseada*Math.sin(dAngle)-vy)/tau;
+		this.f.x += m*(dVel*Math.cos(dAngle)-vx)/tau;
+		this.f.y += m*(dVel*Math.sin(dAngle)-vy)/tau;
 		
 	}
 	
