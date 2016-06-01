@@ -1,13 +1,15 @@
 package s9.itba;
 
 import java.awt.Color;
-import java.util.*;
 
 public class Particle {
 
 	public static final double kn = 1.2 * Math.pow(10, 5);
 	public static final double kt = 2*kn;
 	public static final double mu = kn;
+	public static final double A = 2000;
+	public static final double B = 0.08;
+	public static final double tau = 0.5;
 	
 	public Particle previous, next, pred;
     static int counter = 1;
@@ -19,7 +21,7 @@ public class Particle {
     public double m;   
     
     public double vdeseada = Simulation.vdeseada;
-    public double angledeseado;
+    public double dAngle;
     
     private Color c;     
     public int ID;
@@ -187,22 +189,25 @@ public class Particle {
 	}
 	
 	public void calculateSocialForceModel(Particle p){
-		int A = 2000;
-		double B = 0.08;
-		double cuenta = A*Math.exp(-getSuperposition(p)/B);
-		this.f.x = cuenta*Math.cos(getAngle(p));
-		this.f.y = cuenta*Math.sin(getAngle(p));
+		double res = A*Math.exp(-getSuperposition(p)/B);
+		double xF = res*Math.cos(getAngle(p));
+		double yF = res*Math.sin(getAngle(p));
+		this.f.x += xF;
+		this.f.y += yF;
+		p.f.x -= xF;
+		p.f.y -= yF;
 	}
 	
-	public void calculateDrivingForce(Vector target){
-		double forcex, forcey;
-		forcex = m*(vdeseada*Math.cos(angledeseado)-getVelocity())/0.5;
+	public void calculateDrivingForce(Vector[] target){
+		calculateDAngle(target);
+		this.f.x += m*(vdeseada*Math.cos(dAngle)-vx)/tau;
+		this.f.y += m*(vdeseada*Math.sin(dAngle)-vy)/tau;
 		
 	}
 	
-	private double getAngleWithTarget(Vector target){
-		angledeseado = Math.atan2(target.y-ry, target.x-rx);
-		return angledeseado;
+	private void calculateDAngle(Vector[] target){
+		Vector obj = new Vector((target[0].x+target[1].x)/2,(target[0].y+target[1].y)/2); // por ahora va al medio despues vemos
+		dAngle = Math.atan2(obj.y-ry, obj.x-rx);
 	}
 	
 }

@@ -115,27 +115,28 @@ public class Simulation {
 	
 	private void getF(Set<Particle> particles){
 		clearMarks(particles);
-		//for(Particle p: particles)
-		//	p.f = new Vector(0,-p.m * GRAVITY);
+		for(Particle p: particles)
+			p.f = new Vector(0,0);
 		for(Particle p: particles){
 			if(p.outOfBox)
 				return;
 			if(!p.checked){
 				p.checked = true;
 				for(Particle p2: particles){
-					//acá hay que calcular las dos fuerzas extra
-					//social force model
 					//driving force
 					if(!p.equals(p2) && !p2.checked){
 						p.collision(p2);
+						p.calculateSocialForceModel(p2);
 					}
 				}
 			}
 		}
 		
 		for(Particle p: particles){
-			if(p.ry>=-p.r)
+			if(p.ry>=-p.r){
 				p.collisionWall(s.getW(), s.getL(), s.getD());
+			}
+			p.calculateDrivingForce(s.getTarget());
 		}
 	}
 	
