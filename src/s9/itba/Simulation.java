@@ -9,14 +9,16 @@ public class Simulation {
 	
 	public static final double mass = 0.01;
 
-	public static Vector vdeseada;
+	public static double vdeseada;
+	public double angle;
+	
 	Storage s = null;
 	private Set<Particle> particles;
 	private Set<Particle> outOfBox;
 	Set<Particle> toBeRemoved = new HashSet<Particle>();
 	private Grid grid;
 
-	public Simulation(Storage s, Vector vdeseada) {
+	public Simulation(Storage s, double vdeseada) {
 		this.vdeseada = vdeseada;
 		this.s = s;
 		this.particles = s.getParticles();

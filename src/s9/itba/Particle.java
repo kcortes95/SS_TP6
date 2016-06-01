@@ -17,7 +17,10 @@ public class Particle {
     public double ax, ay;
     public double r;    
     public double m;   
-    public Vector vdeseada = Simulation.vdeseada;
+    
+    public double vdeseada = Simulation.vdeseada;
+    public double angledeseado;
+    
     private Color c;     
     public int ID;
     public boolean checked = false, outOfBox=false;
@@ -61,6 +64,10 @@ public class Particle {
 
     public double getDistance(Particle other){
     	return Math.sqrt(Math.pow(this.rx-other.rx,2)+Math.pow(this.ry-other.ry, 2));
+    }
+    
+    public double getVelocity(){
+    	return Math.sqrt(Math.pow(vx, 2)+Math.pow(vy, 2));
     }
     
     public int hashCode(){
@@ -188,12 +195,14 @@ public class Particle {
 	}
 	
 	public void calculateDrivingForce(Vector target){
-		double force;
-		//force = m*(v)
+		double forcex, forcey;
+		forcex = m*(vdeseada*Math.cos(angledeseado)-getVelocity())/0.5;
+		
 	}
 	
 	private double getAngleWithTarget(Vector target){
-		return Math.atan2(target.y-ry, target.x-rx);
+		angledeseado = Math.atan2(target.y-ry, target.x-rx);
+		return angledeseado;
 	}
 	
 }

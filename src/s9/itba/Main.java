@@ -8,7 +8,7 @@ public class Main {
 
 		Storage s = new Storage(20, 20, 1.2);
 		s.generateRandomParticle(150);
-		Simulation sim = new Simulation(s,new Vector(1, 1.001));
+		Simulation sim = new Simulation(s,1.3);
 		sim.run(40,dt,dt2);
 	}
 }
