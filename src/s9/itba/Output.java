@@ -16,17 +16,18 @@ public class Output {
 		return instance;
 	}
 
-	public void write(Set<Particle> particles, double time){
+	public void write(Set<Particle> particles, double time, int runNum){
+		String fileName = "output" + runNum + ".xyz";
 		if(time == 0){
 			try{
-				PrintWriter pw = new PrintWriter("output.xyz");
+				PrintWriter pw = new PrintWriter(fileName);
 				pw.close();
 			}catch (Exception e){
 				e.printStackTrace();
 			}
 		}
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("output.xyz", true)))) {
-			out.write((particles.size()+4) + "\n");
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)))) {
+			out.write((particles.size()+6) + "\n");
 			//comment line
 			//System.out.println("Frame : " + count++);
 			out.write("Comment line\n");
@@ -34,6 +35,8 @@ public class Output {
 			out.write(100001 + "\t" + 0 + "\t" + 0 + "\t" + 0.5 + "\t0\t0\t0" + "\n");
 			out.write(100002 + "\t" + 20 + "\t" + 0 + "\t" + 0.5 + "\t0\t0\t0" + "\n");
 			out.write(100004+ "\t" + 20 + "\t" + 20 + "\t" + 0.5 + "\t0\t0\t0" + "\n");
+			out.write(100005+ "\t" + 9.15 + "\t" + 0 + "\t" + 0.25 + "\t0\t255\t0" + "\n");
+			out.write(100006 + "\t" + 10.85 + "\t" + 0 + "\t" + 0.25 + "\t0\t255\t0" + "\n");
 			for(Particle p: particles)
 				out.write(p.ID + "\t" + p.rx + "\t" + p.ry + "\t" + p.r + "\t" + 255 + "\t" + 255 + "\t" + 255  + "\n");
 			//out.write(time + "\t " + p.rx + "\n");
@@ -60,16 +63,17 @@ public class Output {
 		}
 	}
 	
-	public void writeAmount(Set<Particle> particles, double time){
+	public void writeAmount(Set<Particle> particles, double time, int runNum){
+		String fileName = "amount" + runNum + ".txt";
 		if(time == 0){
 			try{
-				PrintWriter pw = new PrintWriter("amount.txt");
+				PrintWriter pw = new PrintWriter(fileName);
 				pw.close();
 			}catch (Exception e){
 				e.printStackTrace();
 			}
 		}
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("amount.txt", true)))) {
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)))) {
 			out.write(time + "\t" + particles.size() + "\n");
 			out.close();
 		}catch (IOException e) {

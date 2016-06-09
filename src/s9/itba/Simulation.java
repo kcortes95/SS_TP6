@@ -7,17 +7,19 @@ import java.util.Set;
 public class Simulation {
 	
 	
-	public static final double mass = 0.01;
+	public static final double mass = 80;
 
 	public double angle;
 	
+	private int runNum;
 	Storage s = null;
 	private Set<Particle> particles;
 	private Set<Particle> outOfBox;
 	Set<Particle> toBeRemoved = new HashSet<Particle>();
 	private Grid grid;
 
-	public Simulation(Storage s) {
+	public Simulation(Storage s, int runNum) {
+		this.runNum = runNum;
 		this.s = s;
 		this.particles = s.getParticles();
 		this.outOfBox = new HashSet<Particle>();
@@ -25,9 +27,10 @@ public class Simulation {
 		this.grid = new LinearGrid(L, (int)Math.floor(L/(s.getD()/5))/2, s.getParticles());
 	}
 
-	public void run(double totalTime, double dt, double dt2) {
-		int percentage=-1;
+	public void run(double dt, double dt2) {
 		double time = 0, printTime = 0;
+		boolean hasParticles = true;
+		int previousAmount = 0;
 		// Set forces and calculate previous
 		Set<Particle> previous = new HashSet<Particle>();
 		getF(particles);
@@ -38,17 +41,22 @@ public class Simulation {
 			previous.add(p.previous);
 		}
 		getF(previous);
-		while(time<=totalTime){
-			if((int)(100*time/totalTime)!=percentage){
+		while(hasParticles){
+			/*if((int)(100*time/totalTime)!=percentage){
 				percentage = (int)(100*time/totalTime);
 				System.out.println(percentage + "%");
 				System.out.println("N° particles = " + particles.size());
+			}*/
+			if(previousAmount != particles.size()){
+				previousAmount = particles.size();
+				System.out.println("N° particles = " + particles.size());
 			}
 			if(printTime<=time){
-				Output.getInstace().write(particles,time);
-				Output.getInstace().writeEnergy(particles, printTime);
-				Output.getInstace().writeAmount(particles, printTime);
+				Output.getInstace().write(particles,time,runNum);
+				Output.getInstace().writeAmount(particles, printTime,runNum);
 				printTime += dt2;
+				if(particles.size()==0)
+					hasParticles=false;
 			}
 			beeman(particles,dt);
 			for(Particle p: particles){

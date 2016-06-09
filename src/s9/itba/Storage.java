@@ -61,22 +61,10 @@ public class Storage {
 	public Set<Particle> getParticles() {
 		return particles;
 	}
-
-	public int maxParticles() {
-		return maxParticlesX()*maxParticlesY();
-	}
-	
-	public int maxParticlesX(){
-		return (int)(W / D) * 10;
-	}
-	
-	public int maxParticlesY(){
-		return (int)(L / D) * 10;
-	}
 	
 	public boolean isValidPos(Particle p){
 		for(Particle p2: particles){
-			if(p.getSuperposition(p2)>0)
+			if(p.getSuperposition(p2)+p.r>0)
 				return false;
 		}
 		return true;
